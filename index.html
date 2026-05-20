@@ -200,16 +200,6 @@
         padding: 20px;
       }
 
-      .card-kicker {
-        color: var(--neutral);
-        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
-        font-size: 11px;
-        font-weight: 400;
-        line-height: 1;
-        letter-spacing: 0;
-        text-transform: uppercase;
-      }
-
       .card-title {
         margin: 0;
         color: var(--text);
@@ -245,6 +235,10 @@
         font-size: 18px;
         line-height: 1;
         transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+      }
+
+      .card-foot--icon-only {
+        justify-content: flex-end;
       }
 
       .guide-card:hover .card-arrow {
@@ -405,7 +399,6 @@
           text-align: center;
         }
 
-        .card-kicker,
         .card-note {
           text-align: center;
         }
@@ -448,7 +441,6 @@
               </div>
               <div class="card-body">
                 <div>
-                  <div class="card-kicker">자료 01</div>
                   <h2 class="card-title">탁송이란 ?</h2>
                 </div>
                 <div class="card-foot">
@@ -465,7 +457,6 @@
               </div>
               <div class="card-body">
                 <div>
-                  <div class="card-kicker">자료 02</div>
                   <h2 class="card-title">탁송시 주의 사항</h2>
                 </div>
                 <div class="card-foot">
@@ -482,11 +473,9 @@
               </div>
               <div class="card-body">
                 <div>
-                  <div class="card-kicker">자료 03</div>
                   <h2 class="card-title">로지 설치및사용방법</h2>
                 </div>
-                <div class="card-foot">
-                  <span class="card-note">배차 흐름</span>
+                <div class="card-foot card-foot--icon-only">
                   <span class="card-arrow" aria-hidden="true">›</span>
                 </div>
               </div>
@@ -499,11 +488,9 @@
               </div>
               <div class="card-body">
                 <div>
-                  <div class="card-kicker">자료 04</div>
                   <h2 class="card-title">아이콘 설치및사용방법</h2>
                 </div>
-                <div class="card-foot">
-                  <span class="card-note">초기 설정</span>
+                <div class="card-foot card-foot--icon-only">
                   <span class="card-arrow" aria-hidden="true">›</span>
                 </div>
               </div>
