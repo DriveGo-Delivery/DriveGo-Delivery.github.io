@@ -456,6 +456,20 @@
         text-underline-offset: 4px;
       }
 
+      .caution-footer {
+        margin: 28px 0 0;
+        color: var(--error);
+        font-size: clamp(21px, 3.2vw, 30px);
+        font-weight: 700;
+        line-height: 1.3;
+        text-align: center;
+        text-decoration-line: underline;
+        text-decoration-color: rgba(239, 68, 68, 0.45);
+        text-decoration-thickness: 4px;
+        text-underline-offset: 4px;
+        word-break: keep-all;
+      }
+
       @media (max-width: 1080px) {
         .guide-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -663,6 +677,7 @@
         "item-4": {
           title: "탁송시 주의 사항",
           kind: "caution",
+          footer: "퇴사시 사무실 꼭 연락!",
           rules: [
             {
               main: "출·도착 사진 꼭 잘 찍고 다니세요",
@@ -718,8 +733,7 @@
               main: "보험사고 접수시 자기부담금은 기사님 부담입니다",
               details: [
                 "KB 30만원 · 현대 30만원",
-                "동부 50만원 · 삼성 30만원",
-                "퇴사 시 사무실 꼭 연락!"
+                "동부 50만원 · 삼성 30만원"
               ]
             }
           ]
@@ -813,6 +827,14 @@
           });
 
           guide.append(list);
+
+          if (item.footer) {
+            const footer = document.createElement("p");
+            footer.className = "caution-footer";
+            footer.textContent = item.footer;
+            guide.append(footer);
+          }
+
           return guide;
         }
 
