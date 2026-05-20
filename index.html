@@ -47,6 +47,10 @@
         text-transform: uppercase;
       }
 
+      .screen[hidden] {
+        display: none;
+      }
+
       .file-list {
         display: grid;
         gap: 12px;
@@ -104,6 +108,89 @@
         font-weight: 800;
       }
 
+      .viewer-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .back-button {
+        min-height: 44px;
+        flex: 0 0 auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        color: var(--text);
+        padding: 0 12px;
+        font: inherit;
+        font-weight: 800;
+      }
+
+      .viewer-title-wrap {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .viewer-title {
+        margin: 0;
+        color: var(--text);
+        font-size: 22px;
+        line-height: 1.2;
+      }
+
+      .viewer-type {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .viewer-frame {
+        display: grid;
+        min-height: 360px;
+        overflow: hidden;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #101820;
+      }
+
+      .viewer-frame video,
+      .viewer-frame img,
+      .viewer-frame iframe {
+        width: 100%;
+        max-width: 100%;
+        border: 0;
+      }
+
+      .viewer-frame video,
+      .viewer-frame img {
+        display: block;
+        height: auto;
+        max-height: 72vh;
+      }
+
+      .viewer-frame iframe {
+        display: block;
+        height: 72vh;
+        background: var(--panel);
+      }
+
+      .open-original {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        margin-top: 12px;
+        border-radius: 8px;
+        background: var(--accent);
+        color: #ffffff;
+        padding: 0 14px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
       @media (max-width: 560px) {
         body {
           padding: 12px;
@@ -112,50 +199,191 @@
         main {
           padding: 16px;
         }
+
+        .viewer-frame {
+          min-height: 280px;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <div class="label">DriveGo Delivery</div>
-      <ul class="file-list" aria-label="자료 목록">
-        <li>
-          <a class="file-link" href="assets/item-1.mp4">
-            <span class="file-copy">
-              <span class="file-title">1</span>
-              <span class="file-type">동영상</span>
-            </span>
-            <span class="file-action">열기</span>
-          </a>
-        </li>
-        <li>
-          <a class="file-link" href="assets/item-2.pdf">
-            <span class="file-copy">
-              <span class="file-title">2</span>
-              <span class="file-type">PDF</span>
-            </span>
-            <span class="file-action">열기</span>
-          </a>
-        </li>
-        <li>
-          <a class="file-link" href="assets/item-3.mp4">
-            <span class="file-copy">
-              <span class="file-title">3</span>
-              <span class="file-type">동영상</span>
-            </span>
-            <span class="file-action">열기</span>
-          </a>
-        </li>
-        <li>
-          <a class="file-link" href="assets/item-4.jpg">
-            <span class="file-copy">
-              <span class="file-title">4</span>
-              <span class="file-type">이미지</span>
-            </span>
-            <span class="file-action">열기</span>
-          </a>
-        </li>
-      </ul>
+      <section class="screen" id="list-view">
+        <div class="label">DriveGo Delivery</div>
+        <ul class="file-list" aria-label="자료 목록">
+          <li>
+            <a class="file-link" href="#item-3" data-item="item-3">
+              <span class="file-copy">
+                <span class="file-title">탁송이란 ?</span>
+                <span class="file-type">동영상</span>
+              </span>
+              <span class="file-action">보기</span>
+            </a>
+          </li>
+          <li>
+            <a class="file-link" href="#item-1" data-item="item-1">
+              <span class="file-copy">
+                <span class="file-title">1</span>
+                <span class="file-type">동영상</span>
+              </span>
+              <span class="file-action">보기</span>
+            </a>
+          </li>
+          <li>
+            <a class="file-link" href="#item-2" data-item="item-2">
+              <span class="file-copy">
+                <span class="file-title">2</span>
+                <span class="file-type">PDF</span>
+              </span>
+              <span class="file-action">보기</span>
+            </a>
+          </li>
+          <li>
+            <a class="file-link" href="#item-4" data-item="item-4">
+              <span class="file-copy">
+                <span class="file-title">4</span>
+                <span class="file-type">이미지</span>
+              </span>
+              <span class="file-action">보기</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="screen" id="detail-view" hidden>
+        <div class="viewer-head">
+          <button class="back-button" type="button" id="back-button">목록으로</button>
+          <div class="viewer-title-wrap">
+            <h1 class="viewer-title" id="viewer-title"></h1>
+            <span class="viewer-type" id="viewer-type"></span>
+          </div>
+        </div>
+        <div class="viewer-frame" id="viewer-frame"></div>
+        <a class="open-original" id="open-original" href="#" target="_blank" rel="noopener">새 창에서 열기</a>
+      </section>
     </main>
+
+    <script>
+      const materials = {
+        "item-1": {
+          title: "1",
+          type: "동영상",
+          kind: "video",
+          src: "assets/item-1.mp4"
+        },
+        "item-2": {
+          title: "2",
+          type: "PDF",
+          kind: "pdf",
+          src: "assets/item-2.pdf"
+        },
+        "item-3": {
+          title: "탁송이란 ?",
+          type: "동영상",
+          kind: "video",
+          src: "assets/item-3.mp4"
+        },
+        "item-4": {
+          title: "4",
+          type: "이미지",
+          kind: "image",
+          src: "assets/item-4.jpg"
+        }
+      };
+
+      const listView = document.querySelector("#list-view");
+      const detailView = document.querySelector("#detail-view");
+      const viewerTitle = document.querySelector("#viewer-title");
+      const viewerType = document.querySelector("#viewer-type");
+      const viewerFrame = document.querySelector("#viewer-frame");
+      const openOriginal = document.querySelector("#open-original");
+      const backButton = document.querySelector("#back-button");
+
+      const clearViewer = () => {
+        viewerFrame.textContent = "";
+      };
+
+      const createViewer = (item) => {
+        if (item.kind === "video") {
+          const video = document.createElement("video");
+          video.controls = true;
+          video.playsInline = true;
+          video.preload = "metadata";
+          video.src = item.src;
+          return video;
+        }
+
+        if (item.kind === "image") {
+          const image = document.createElement("img");
+          image.alt = item.title;
+          image.src = item.src;
+          return image;
+        }
+
+        const frame = document.createElement("iframe");
+        frame.title = item.title;
+        frame.src = item.src;
+        return frame;
+      };
+
+      const openItem = (id, pushState = true) => {
+        const item = materials[id];
+        if (!item) {
+          showList(false);
+          return;
+        }
+
+        clearViewer();
+        viewerTitle.textContent = item.title;
+        viewerType.textContent = item.type;
+        openOriginal.href = item.src;
+        viewerFrame.append(createViewer(item));
+        listView.hidden = true;
+        detailView.hidden = false;
+
+        if (pushState && window.location.hash !== `#${id}`) {
+          history.pushState({ item: id }, "", `#${id}`);
+        }
+
+        window.scrollTo({ top: 0, behavior: "auto" });
+      };
+
+      const showList = (pushState = true) => {
+        clearViewer();
+        detailView.hidden = true;
+        listView.hidden = false;
+
+        if (pushState && window.location.hash) {
+          history.replaceState({}, "", `${window.location.pathname}${window.location.search}`);
+        }
+
+        window.scrollTo({ top: 0, behavior: "auto" });
+      };
+
+      document.querySelectorAll("[data-item]").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          openItem(link.dataset.item);
+        });
+      });
+
+      backButton.addEventListener("click", () => {
+        showList();
+      });
+
+      window.addEventListener("popstate", () => {
+        const id = window.location.hash.slice(1);
+        if (id && materials[id]) {
+          openItem(id, false);
+        } else {
+          showList(false);
+        }
+      });
+
+      const initialItem = window.location.hash.slice(1);
+      if (initialItem && materials[initialItem]) {
+        openItem(initialItem, false);
+      }
+    </script>
   </body>
 </html>
