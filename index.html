@@ -67,12 +67,28 @@
       }
 
       .brand {
+        display: grid;
+        justify-items: center;
+        gap: 0;
         color: var(--text);
         font-family: "General Sans", "DM Sans", sans-serif;
         font-size: 17px;
         font-weight: 700;
         letter-spacing: 0;
+        line-height: 1;
         text-decoration: none;
+      }
+
+      .brand-logo {
+        display: block;
+        width: 90px;
+        height: auto;
+        filter: drop-shadow(0 1px 1px rgba(10, 10, 10, 0.35));
+      }
+
+      .brand-text {
+        display: block;
+        margin-top: -1px;
       }
 
       .shell {
@@ -573,7 +589,10 @@
   </head>
   <body>
     <nav class="top-nav" aria-label="기본">
-      <a class="brand" href="./">드라이브고</a>
+      <a class="brand" href="./" aria-label="드라이브고">
+        <img class="brand-logo" src="assets/drivego-logo.png" alt="">
+        <span class="brand-text">드라이브고</span>
+      </a>
     </nav>
 
     <main class="shell">
