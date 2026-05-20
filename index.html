@@ -50,11 +50,12 @@
       .page-title {
         margin: 0 0 24px;
         color: var(--text);
-        font-size: clamp(44px, 12vw, 76px);
+        font-size: clamp(24px, 9vw, 76px);
         font-weight: 900;
         line-height: 1.02;
         letter-spacing: 0;
         text-align: center;
+        white-space: nowrap;
       }
 
       .screen[hidden] {
@@ -163,6 +164,30 @@
         background: var(--panel);
       }
 
+      .viewer-frame--pages {
+        display: block;
+        min-height: 0;
+        overflow: visible;
+        border: 0;
+        background: transparent;
+      }
+
+      .pdf-pages {
+        display: grid;
+        gap: 12px;
+        width: 100%;
+      }
+
+      .viewer-frame .pdf-page {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: none;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
       @media (max-width: 560px) {
         body {
           padding: 12px;
@@ -170,10 +195,6 @@
 
         main {
           padding: 16px;
-        }
-
-        .page-title {
-          font-size: 46px;
         }
 
         .file-title {
@@ -189,7 +210,7 @@
   <body>
     <main>
       <section class="screen" id="list-view">
-        <div class="label">DriveGo Delivery</div>
+        <div class="label">드라이브고</div>
         <h1 class="page-title">신규기사님 가이드</h1>
         <ul class="file-list" aria-label="자료 목록">
           <li>
@@ -243,8 +264,10 @@
         },
         "item-2": {
           title: "로지 설치및사용방법",
-          kind: "pdf",
-          src: "assets/item-2.pdf"
+          kind: "pages",
+          pages: Array.from({ length: 23 }, (_, index) => {
+            return `assets/logi-guide/page-${String(index + 1).padStart(2, "0")}.jpg`;
+          })
         },
         "item-3": {
           title: "탁송이란 ?",
@@ -260,12 +283,14 @@
 
       const listView = document.querySelector("#list-view");
       const detailView = document.querySelector("#detail-view");
+      const pageTitle = document.querySelector(".page-title");
       const viewerTitle = document.querySelector("#viewer-title");
       const viewerFrame = document.querySelector("#viewer-frame");
       const backButton = document.querySelector("#back-button");
 
       const clearViewer = () => {
         viewerFrame.textContent = "";
+        viewerFrame.className = "viewer-frame";
       };
 
       const createViewer = (item) => {
@@ -285,10 +310,46 @@
           return image;
         }
 
+        if (item.kind === "pages") {
+          const pages = document.createElement("div");
+          pages.className = "pdf-pages";
+
+          item.pages.forEach((src, index) => {
+            const image = document.createElement("img");
+            image.alt = `${item.title} ${index + 1}페이지`;
+            image.className = "pdf-page";
+            image.loading = index < 2 ? "eager" : "lazy";
+            image.src = src;
+            pages.append(image);
+          });
+
+          return pages;
+        }
+
         const frame = document.createElement("iframe");
         frame.title = item.title;
         frame.src = item.src;
         return frame;
+      };
+
+      const fitPageTitle = () => {
+        if (!pageTitle) {
+          return;
+        }
+
+        pageTitle.style.fontSize = "";
+        let size = Number.parseFloat(getComputedStyle(pageTitle).fontSize);
+        const minSize = 24;
+        const maxWidth = pageTitle.parentElement.clientWidth;
+
+        if (!maxWidth) {
+          return;
+        }
+
+        while (pageTitle.scrollWidth > maxWidth && size > minSize) {
+          size -= 1;
+          pageTitle.style.fontSize = `${size}px`;
+        }
       };
 
       const openItem = (id, pushState = true) => {
@@ -300,6 +361,7 @@
 
         clearViewer();
         viewerTitle.textContent = item.title;
+        viewerFrame.classList.toggle("viewer-frame--pages", item.kind === "pages");
         viewerFrame.append(createViewer(item));
         listView.hidden = true;
         detailView.hidden = false;
@@ -315,6 +377,7 @@
         clearViewer();
         detailView.hidden = true;
         listView.hidden = false;
+        fitPageTitle();
 
         if (pushState && window.location.hash) {
           history.replaceState({}, "", `${window.location.pathname}${window.location.search}`);
@@ -346,6 +409,13 @@
       const initialItem = window.location.hash.slice(1);
       if (initialItem && materials[initialItem]) {
         openItem(initialItem, false);
+      }
+
+      fitPageTitle();
+      window.addEventListener("resize", fitPageTitle);
+
+      if (document.fonts) {
+        document.fonts.ready.then(fitPageTitle);
       }
     </script>
   </body>
