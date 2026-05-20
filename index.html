@@ -258,22 +258,22 @@
       .back-button {
         min-height: 38px;
         flex: 0 0 auto;
-        border: 1px solid var(--border);
+        border: 1px solid var(--primary);
         border-radius: 6px;
-        background: transparent;
-        color: var(--text);
+        background: var(--primary);
+        color: var(--surface);
         padding: 0 16px;
         font: inherit;
         font-size: 14px;
         font-weight: 700;
         white-space: nowrap;
-        transition: transform 200ms ease, border-color 200ms ease, color 200ms ease;
+        transition: transform 200ms ease, border-color 200ms ease, background 200ms ease;
       }
 
       .back-button:hover {
         transform: translateY(-1px);
-        border-color: var(--primary);
-        color: var(--primary);
+        border-color: var(--primary-hover);
+        background: var(--primary-hover);
       }
 
       .viewer-title-wrap {
