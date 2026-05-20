@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DriveGo Delivery</title>
+    <title>신규기사님 가이드</title>
     <style>
       :root {
         color-scheme: light;
@@ -39,12 +39,21 @@
       }
 
       .label {
-        margin-bottom: 16px;
+        margin-bottom: 8px;
         color: var(--accent);
         font-size: 14px;
         font-weight: 700;
         letter-spacing: 0;
         text-transform: uppercase;
+      }
+
+      .page-title {
+        margin: 0 0 24px;
+        color: var(--text);
+        font-size: clamp(44px, 12vw, 76px);
+        font-weight: 900;
+        line-height: 1.02;
+        letter-spacing: 0;
       }
 
       .screen[hidden] {
@@ -62,10 +71,10 @@
       .file-link {
         display: flex;
         align-items: center;
-        min-height: 72px;
+        min-height: 88px;
         justify-content: space-between;
         gap: 18px;
-        padding: 14px;
+        padding: 18px;
         border: 1px solid var(--line);
         border-radius: 8px;
         color: inherit;
@@ -85,17 +94,9 @@
       .file-title {
         display: block;
         color: var(--text);
-        font-size: 20px;
-        font-weight: 800;
-        line-height: 1.2;
-      }
-
-      .file-type {
-        display: block;
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.35;
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1.18;
       }
 
       .file-action {
@@ -135,15 +136,9 @@
       .viewer-title {
         margin: 0;
         color: var(--text);
-        font-size: 22px;
+        font-size: 28px;
+        font-weight: 900;
         line-height: 1.2;
-      }
-
-      .viewer-type {
-        display: block;
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 14px;
       }
 
       .viewer-frame {
@@ -177,20 +172,6 @@
         background: var(--panel);
       }
 
-      .open-original {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 44px;
-        margin-top: 12px;
-        border-radius: 8px;
-        background: var(--accent);
-        color: #ffffff;
-        padding: 0 14px;
-        font-weight: 800;
-        text-decoration: none;
-      }
-
       @media (max-width: 560px) {
         body {
           padding: 12px;
@@ -198,6 +179,14 @@
 
         main {
           padding: 16px;
+        }
+
+        .page-title {
+          font-size: 46px;
+        }
+
+        .file-title {
+          font-size: 26px;
         }
 
         .viewer-frame {
@@ -210,12 +199,28 @@
     <main>
       <section class="screen" id="list-view">
         <div class="label">DriveGo Delivery</div>
+        <h1 class="page-title">신규기사님 가이드</h1>
         <ul class="file-list" aria-label="자료 목록">
           <li>
             <a class="file-link" href="#item-3" data-item="item-3">
               <span class="file-copy">
-                <span class="file-title">탁송이란 ?</span>
-                <span class="file-type">동영상</span>
+                <span class="file-title">로지 설치및사용방법</span>
+              </span>
+              <span class="file-action">보기</span>
+            </a>
+          </li>
+          <li>
+            <a class="file-link" href="#item-4" data-item="item-4">
+              <span class="file-copy">
+                <span class="file-title">탁송시 주의 사항</span>
+              </span>
+              <span class="file-action">보기</span>
+            </a>
+          </li>
+          <li>
+            <a class="file-link" href="#item-2" data-item="item-2">
+              <span class="file-copy">
+                <span class="file-title">아이콘 설치및사용방법</span>
               </span>
               <span class="file-action">보기</span>
             </a>
@@ -224,25 +229,6 @@
             <a class="file-link" href="#item-1" data-item="item-1">
               <span class="file-copy">
                 <span class="file-title">1</span>
-                <span class="file-type">동영상</span>
-              </span>
-              <span class="file-action">보기</span>
-            </a>
-          </li>
-          <li>
-            <a class="file-link" href="#item-2" data-item="item-2">
-              <span class="file-copy">
-                <span class="file-title">2</span>
-                <span class="file-type">PDF</span>
-              </span>
-              <span class="file-action">보기</span>
-            </a>
-          </li>
-          <li>
-            <a class="file-link" href="#item-4" data-item="item-4">
-              <span class="file-copy">
-                <span class="file-title">4</span>
-                <span class="file-type">이미지</span>
               </span>
               <span class="file-action">보기</span>
             </a>
@@ -255,11 +241,9 @@
           <button class="back-button" type="button" id="back-button">목록으로</button>
           <div class="viewer-title-wrap">
             <h1 class="viewer-title" id="viewer-title"></h1>
-            <span class="viewer-type" id="viewer-type"></span>
           </div>
         </div>
         <div class="viewer-frame" id="viewer-frame"></div>
-        <a class="open-original" id="open-original" href="#" target="_blank" rel="noopener">새 창에서 열기</a>
       </section>
     </main>
 
@@ -267,25 +251,21 @@
       const materials = {
         "item-1": {
           title: "1",
-          type: "동영상",
           kind: "video",
           src: "assets/item-1.mp4"
         },
         "item-2": {
-          title: "2",
-          type: "PDF",
+          title: "아이콘 설치및사용방법",
           kind: "pdf",
           src: "assets/item-2.pdf"
         },
         "item-3": {
-          title: "탁송이란 ?",
-          type: "동영상",
+          title: "로지 설치및사용방법",
           kind: "video",
           src: "assets/item-3.mp4"
         },
         "item-4": {
-          title: "4",
-          type: "이미지",
+          title: "탁송시 주의 사항",
           kind: "image",
           src: "assets/item-4.jpg"
         }
@@ -294,9 +274,7 @@
       const listView = document.querySelector("#list-view");
       const detailView = document.querySelector("#detail-view");
       const viewerTitle = document.querySelector("#viewer-title");
-      const viewerType = document.querySelector("#viewer-type");
       const viewerFrame = document.querySelector("#viewer-frame");
-      const openOriginal = document.querySelector("#open-original");
       const backButton = document.querySelector("#back-button");
 
       const clearViewer = () => {
@@ -335,8 +313,6 @@
 
         clearViewer();
         viewerTitle.textContent = item.title;
-        viewerType.textContent = item.type;
-        openOriginal.href = item.src;
         viewerFrame.append(createViewer(item));
         listView.hidden = true;
         detailView.hidden = false;
