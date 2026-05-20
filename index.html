@@ -357,6 +357,105 @@
         background: var(--surface);
       }
 
+      .viewer-frame--caution {
+        display: block;
+        min-height: 0;
+        padding: clamp(24px, 4vw, 48px);
+        place-items: initial;
+      }
+
+      .caution-guide {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+
+      .caution-guide::before {
+        position: absolute;
+        z-index: -1;
+        inset: 16% -10% auto;
+        height: 360px;
+        background-image: url("assets/previews/item-4-bg.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        content: "";
+        opacity: 0.08;
+      }
+
+      .caution-list {
+        display: grid;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .caution-item {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 16px;
+        padding: 22px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .caution-item:first-child {
+        padding-top: 0;
+      }
+
+      .caution-item:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .caution-number {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border-radius: 9999px;
+        background: var(--text);
+        color: var(--surface);
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      .caution-copy {
+        display: grid;
+        min-width: 0;
+        gap: 8px;
+      }
+
+      .caution-main,
+      .caution-detail {
+        margin: 0;
+        word-break: keep-all;
+        overflow-wrap: anywhere;
+      }
+
+      .caution-main {
+        color: var(--text);
+        font-size: clamp(21px, 3.2vw, 30px);
+        font-weight: 700;
+        line-height: 1.32;
+      }
+
+      .caution-detail {
+        color: var(--text-secondary);
+        font-size: clamp(16px, 2.4vw, 21px);
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .caution-alert {
+        color: var(--error);
+        text-decoration-line: underline;
+        text-decoration-color: rgba(239, 68, 68, 0.45);
+        text-decoration-thickness: 4px;
+        text-underline-offset: 4px;
+      }
+
       @media (max-width: 1080px) {
         .guide-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -418,6 +517,36 @@
         .viewer-frame > img {
           width: 100%;
           max-height: none;
+        }
+
+        .viewer-frame--caution {
+          padding: 20px 18px;
+        }
+
+        .caution-guide::before {
+          inset: 10% -32% auto;
+          height: 300px;
+          opacity: 0.07;
+        }
+
+        .caution-item {
+          grid-template-columns: 36px minmax(0, 1fr);
+          gap: 12px;
+          padding: 19px 0;
+        }
+
+        .caution-number {
+          width: 36px;
+          height: 36px;
+          font-size: 14px;
+        }
+
+        .caution-main {
+          font-size: 21px;
+        }
+
+        .caution-detail {
+          font-size: 16px;
         }
       }
     </style>
@@ -533,8 +662,67 @@
         },
         "item-4": {
           title: "탁송시 주의 사항",
-          kind: "image",
-          src: "assets/item-4.jpg"
+          kind: "caution",
+          rules: [
+            {
+              main: "출·도착 사진 꼭 잘 찍고 다니세요",
+              details: [
+                "앞유리, 계기판 포함 차량 전체 사진",
+                "유일한 증거입니다"
+              ]
+            },
+            {
+              main: "콜을 잡고 배차시 꼭 바로 해당 상황실 통화 후 이동하세요",
+              details: [
+                "내일 예약콜이든 몇 시간 뒤 콜이든 항상 상황실 선 통화입니다"
+              ]
+            },
+            {
+              main: "현금, 완후, 즉후, 후불 정산 구분을 확인하세요",
+              details: [
+                "현금은 출·도착에서 확인",
+                "완후·즉후는 배차완료 10분 후 자동정산",
+                "후불은 익일 8시 자동정산"
+              ]
+            },
+            {
+              main: "슬리퍼, 반바지, 모자, 츄리닝, 등산복 절대 안됩니다",
+              details: [
+                "타투, 문신은 안 보이게 해주세요"
+              ]
+            },
+            {
+              main: "임의대로 그 어떤 것도 하시면 안됩니다",
+              details: [
+                "특히 주유 주의",
+                "유료도로 톨비는 기본적으로 기사님 부담입니다"
+              ]
+            },
+            {
+              main: "차 안에 그 어떤 것도 손대지 마세요"
+            },
+            {
+              main: "차량 내 흡연 절대 금지",
+              details: [
+                "클리닉 비용 청구",
+                "차량 동승 절대 금지"
+              ]
+            },
+            {
+              main: "콜을 잡고 배차를 받으셨으면 꼭 이행하셔야 됩니다",
+              details: [
+                "콜 이행이 안 되는 경우 해당 상황실에 빨리 연락해서 취소해야 됩니다"
+              ]
+            },
+            {
+              main: "보험사고 접수시 자기부담금은 기사님 부담입니다",
+              details: [
+                "KB 30만원 · 현대 30만원",
+                "동부 50만원 · 삼성 30만원",
+                "퇴사 시 사무실 꼭 연락!"
+              ]
+            }
+          ]
         }
       };
 
@@ -584,6 +772,50 @@
           return pages;
         }
 
+        if (item.kind === "caution") {
+          const guide = document.createElement("article");
+          guide.className = "caution-guide";
+
+          const list = document.createElement("ol");
+          list.className = "caution-list";
+          list.setAttribute("aria-label", item.title);
+
+          item.rules.forEach((rule, index) => {
+            const row = document.createElement("li");
+            row.className = "caution-item";
+
+            const number = document.createElement("span");
+            number.className = "caution-number";
+            number.textContent = String(index + 1);
+
+            const copy = document.createElement("div");
+            copy.className = "caution-copy";
+
+            const main = document.createElement("p");
+            main.className = "caution-main";
+            main.textContent = rule.main;
+            copy.append(main);
+
+            (rule.details || []).forEach((text) => {
+              const detail = document.createElement("p");
+              detail.className = "caution-detail";
+              detail.textContent = text;
+
+              if (/유일한 증거|특히 주유|절대 금지|꼭 연락/.test(text)) {
+                detail.classList.add("caution-alert");
+              }
+
+              copy.append(detail);
+            });
+
+            row.append(number, copy);
+            list.append(row);
+          });
+
+          guide.append(list);
+          return guide;
+        }
+
         const frame = document.createElement("iframe");
         frame.title = item.title;
         frame.src = item.src;
@@ -626,6 +858,7 @@
         clearViewer();
         viewerTitle.textContent = item.title;
         viewerFrame.classList.toggle("viewer-frame--pages", item.kind === "pages");
+        viewerFrame.classList.toggle("viewer-frame--caution", item.kind === "caution");
         viewerFrame.append(createViewer(item));
         listView.hidden = true;
         detailView.hidden = false;
