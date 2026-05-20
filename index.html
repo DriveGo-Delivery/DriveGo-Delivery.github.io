@@ -159,6 +159,39 @@
         object-position: left center;
       }
 
+      .preview--brand {
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background-color: var(--surface);
+        background-image: url("assets/previews/item-4-bg.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: min(82%, 520px) auto;
+        isolation: isolate;
+      }
+
+      .preview--brand::before {
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.7);
+        content: "";
+      }
+
+      .preview-title {
+        position: relative;
+        z-index: 1;
+        color: var(--text);
+        font-family: "General Sans", "DM Sans", sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.08;
+        letter-spacing: 0;
+        text-align: center;
+        white-space: nowrap;
+      }
+
       .card-body {
         display: grid;
         min-height: 132px;
@@ -223,6 +256,7 @@
       .viewer-head {
         display: flex;
         align-items: center;
+        min-width: 0;
         gap: 16px;
         margin-bottom: 24px;
       }
@@ -238,6 +272,7 @@
         font: inherit;
         font-size: 14px;
         font-weight: 700;
+        white-space: nowrap;
         transition: transform 200ms ease, border-color 200ms ease, color 200ms ease;
       }
 
@@ -260,6 +295,9 @@
         font-weight: 700;
         line-height: 1.04;
         letter-spacing: 0;
+        overflow: hidden;
+        text-overflow: clip;
+        white-space: nowrap;
       }
 
       .viewer-frame {
@@ -349,6 +387,14 @@
           height: 184px;
         }
 
+        .preview--brand {
+          background-size: min(92%, 430px) auto;
+        }
+
+        .preview-title {
+          font-size: 28px;
+        }
+
         .card-body {
           min-height: 112px;
           padding: 18px;
@@ -370,11 +416,6 @@
 
         .card-arrow {
           display: none;
-        }
-
-        .viewer-head {
-          align-items: flex-start;
-          flex-direction: column;
         }
 
         .viewer-frame {
@@ -419,8 +460,8 @@
           </li>
           <li>
             <a class="guide-card" href="#item-4" data-item="item-4">
-              <div class="preview preview--top">
-                <img src="assets/previews/item-4.jpg" alt="">
+              <div class="preview preview--brand" aria-hidden="true">
+                <span class="preview-title">탁송시 주의 사항</span>
               </div>
               <div class="card-body">
                 <div>
@@ -473,7 +514,7 @@
 
       <section class="screen" id="detail-view" hidden>
         <div class="viewer-head">
-          <button class="back-button" type="button" id="back-button">목록으로</button>
+          <button class="back-button" type="button" id="back-button" aria-label="목록으로 돌아가기">목록</button>
           <div class="viewer-title-wrap">
             <h1 class="viewer-title" id="viewer-title"></h1>
           </div>
@@ -562,24 +603,30 @@
         return frame;
       };
 
-      const fitPageTitle = () => {
-        if (!pageTitle || listView.hidden) {
+      const fitTitleToLine = (title, minSize) => {
+        if (!title || title.closest("[hidden]")) {
           return;
         }
 
-        pageTitle.style.fontSize = "";
-        let size = Number.parseFloat(getComputedStyle(pageTitle).fontSize);
-        const minSize = 24;
-        const maxWidth = pageTitle.parentElement.clientWidth;
+        title.style.fontSize = "";
+        let size = Number.parseFloat(getComputedStyle(title).fontSize);
+        const maxWidth = title.parentElement.clientWidth;
 
         if (!maxWidth) {
           return;
         }
 
-        while (pageTitle.scrollWidth > maxWidth && size > minSize) {
+        while (title.scrollWidth > maxWidth && size > minSize) {
           size -= 1;
-          pageTitle.style.fontSize = `${size}px`;
+          title.style.fontSize = `${size}px`;
         }
+      };
+
+      const fitPageTitle = () => fitTitleToLine(pageTitle, 24);
+      const fitViewerTitle = () => fitTitleToLine(viewerTitle, 20);
+      const fitVisibleTitles = () => {
+        fitPageTitle();
+        fitViewerTitle();
       };
 
       const openItem = (id, pushState = true) => {
@@ -595,6 +642,7 @@
         viewerFrame.append(createViewer(item));
         listView.hidden = true;
         detailView.hidden = false;
+        fitViewerTitle();
 
         if (pushState && window.location.hash !== `#${id}`) {
           history.pushState({ item: id }, "", `#${id}`);
@@ -641,11 +689,11 @@
         openItem(initialItem, false);
       }
 
-      fitPageTitle();
-      window.addEventListener("resize", fitPageTitle);
+      fitVisibleTitles();
+      window.addEventListener("resize", fitVisibleTitles);
 
       if (document.fonts) {
-        document.fonts.ready.then(fitPageTitle);
+        document.fonts.ready.then(fitVisibleTitles);
       }
     </script>
   </body>
