@@ -197,12 +197,14 @@
         min-height: 132px;
         align-content: space-between;
         gap: 20px;
+        background: var(--primary);
         padding: 20px;
+        transition: background 200ms ease;
       }
 
       .card-title {
         margin: 0;
-        color: var(--text);
+        color: var(--surface);
         font-family: "General Sans", "DM Sans", sans-serif;
         font-size: 24px;
         font-weight: 700;
@@ -218,7 +220,7 @@
       }
 
       .card-note {
-        color: var(--text-secondary);
+        color: var(--surface);
         font-size: 13px;
         font-weight: 500;
       }
@@ -229,9 +231,9 @@
         height: 32px;
         flex: 0 0 32px;
         place-items: center;
-        border: 1px solid var(--border);
+        border: 1px solid rgba(255, 255, 255, 0.48);
         border-radius: 9999px;
-        color: var(--primary);
+        color: var(--surface);
         font-size: 18px;
         line-height: 1;
         transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
@@ -241,10 +243,14 @@
         justify-content: flex-end;
       }
 
+      .guide-card:hover .card-body {
+        background: var(--primary-hover);
+      }
+
       .guide-card:hover .card-arrow {
-        border-color: var(--primary);
-        background: var(--primary);
-        color: var(--surface);
+        border-color: var(--surface);
+        background: var(--surface);
+        color: var(--primary-hover);
       }
 
       .viewer-head {
